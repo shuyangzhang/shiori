@@ -1,9 +1,14 @@
 package tools
 
 import (
+	"context"
+	"fmt"
 	"strings"
 
+	"github.com/google/uuid"
+	"github.com/lonelyevil/khl"
 	"github.com/shuyangzhang/shiori/configs"
+	log "github.com/sirupsen/logrus"
 	"golang.org/x/exp/slices"
 )
 
@@ -21,4 +26,45 @@ func GetCommandWithParameters(rawCommand string) (withPrefix bool, command strin
 	}
 
 	return
+}
+
+func CommandRouter(ctx *khl.KmarkdownMessageContext, command string, params []string) {
+	logId := uuid.NewString()
+
+	commonCtx := context.Background()
+	commonCtx = context.WithValue(commonCtx, "logId", logId)
+
+	teardown := commandLogger(commonCtx, ctx, command, params)
+	defer teardown(commonCtx)
+
+	if command == "testpanic" {
+		panic("i am testing panic")
+	}
+}
+
+func commandLogger(commonCtx context.Context, ctx *khl.KmarkdownMessageContext, command string, params []string) func(commonCtx context.Context) {
+	log.WithFields(log.Fields{
+		"logId":       commonCtx.Value("logId"),
+		"channelName": ctx.Extra.ChannelName,
+		"guildId":     ctx.Extra.GuildID,
+	}).Info(
+		fmt.Sprintf("user: %v, username: %v, used command: %v, with args: %v",
+			ctx.Common.AuthorID,
+			ctx.Extra.Author.Nickname,
+			command,
+			params))
+
+	return func(commonCtx context.Context) {
+		if err := recover(); err != nil {
+			log.WithField("logId", commonCtx.Value("logId")).Error(
+				fmt.Sprintf("panic occurred: %v", err),
+			)
+		}
+	}
+}
+
+func init() {
+	log.SetFormatter(&log.TextFormatter{
+		FullTimestamp: true,
+	})
 }

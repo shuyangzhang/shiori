@@ -16,7 +16,7 @@ import (
 
 func main() {
 	logger := log.Logger{
-		Level:  log.TraceLevel,
+		Level:  log.InfoLevel,
 		Writer: &log.ConsoleWriter{},
 	}
 
