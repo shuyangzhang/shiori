@@ -1,4 +1,4 @@
-package tools
+package parser
 
 import (
 	"context"
@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/lonelyevil/khl"
 	"github.com/shuyangzhang/shiori/configs"
+	"github.com/shuyangzhang/shiori/internal/router"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/exp/slices"
 )
@@ -28,7 +29,7 @@ func GetCommandWithParameters(rawCommand string) (withPrefix bool, command strin
 	return
 }
 
-func CommandRouter(ctx *khl.KmarkdownMessageContext, command string, params []string) {
+func RouteCommand(ctx *khl.KmarkdownMessageContext, command string, params []string) {
 	logId := uuid.NewString()
 
 	commonCtx := context.Background()
@@ -36,6 +37,14 @@ func CommandRouter(ctx *khl.KmarkdownMessageContext, command string, params []st
 
 	teardown := commandLogger(commonCtx, ctx, command, params)
 	defer teardown(commonCtx)
+
+	commandService, ok := router.CommandRouter[command]
+
+	if ok {
+		commandService(ctx, params...)
+	} else {
+		log.Warn(fmt.Sprintf("unknown command: %v", command))
+	}
 
 	if command == "testpanic" {
 		panic("i am testing panic")
