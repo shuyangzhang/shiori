@@ -4,9 +4,9 @@ go 1.18
 
 require (
 	github.com/joho/godotenv v1.4.0
-	github.com/lonelyevil/khl v0.0.26
-	github.com/lonelyevil/khl/log_adapter/plog v0.0.26
-	github.com/phuslu/log v1.0.77
+	github.com/lonelyevil/khl v0.0.27
+	github.com/lonelyevil/khl/log_adapter/plog v0.0.27
+	github.com/phuslu/log v1.0.80
 )
 
 require (
