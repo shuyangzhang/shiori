@@ -10,4 +10,5 @@ var CommandRouter = make(map[string]func(*khl.KmarkdownMessageContext, ...string
 func init() {
 	CommandRouter["ping"] = service.Ping
 	CommandRouter["version"] = service.Version
+	CommandRouter["alias"] = service.NameToAliases
 }
