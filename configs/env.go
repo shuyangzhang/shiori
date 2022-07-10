@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/spf13/viper"
+	"gorm.io/gorm"
 )
 
 var EnvConfigs *envConfigs
@@ -19,6 +20,13 @@ type envConfigs struct {
 	Prefix        string   `mapstructure:"PREFIX"`
 	PrefixAliases []string `mapstructure:"PREFIX_ALIASES"`
 	AllPrefixes   []string
+
+	PostgresHost     string `mapstructure:"POSTGRES_HOST"`
+	PostgresPort     string `mapstructure:"POSTGRES_PORT"`
+	PostgresDB       string `mapstructure:"POSTGRES_DB"`
+	PostgresUser     string `mapstructure:"POSTGRES_USER"`
+	PostgresPassword string `mapstructure:"POSTGRES_PASSWORD"`
+	DB               *gorm.DB
 }
 
 func loadEnvVariables() (config *envConfigs) {

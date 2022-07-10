@@ -21,6 +21,7 @@ func main() {
 	}
 
 	configs.InitEnvConfigs()
+	configs.InitDB()
 
 	s := khl.New(configs.EnvConfigs.Token, plog.NewLogger(&logger))
 
