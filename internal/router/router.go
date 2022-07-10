@@ -11,4 +11,5 @@ func init() {
 	CommandRouter["ping"] = service.Ping
 	CommandRouter["version"] = service.Version
 	CommandRouter["alias"] = service.NameToAliases
+	CommandRouter["jjc"] = service.Arena
 }
