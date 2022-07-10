@@ -20,9 +20,6 @@ func main() {
 		Writer: &log.ConsoleWriter{},
 	}
 
-	configs.InitEnvConfigs()
-	configs.InitDB()
-
 	s := khl.New(configs.EnvConfigs.Token, plog.NewLogger(&logger))
 
 	handlers.RegisterHandlers(s)

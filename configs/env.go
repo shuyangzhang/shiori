@@ -9,7 +9,7 @@ import (
 
 var EnvConfigs *envConfigs
 
-func InitEnvConfigs() {
+func initEnvConfigs() {
 	EnvConfigs = loadEnvVariables()
 	EnvConfigs.AllPrefixes = append(EnvConfigs.PrefixAliases, EnvConfigs.Prefix)
 }

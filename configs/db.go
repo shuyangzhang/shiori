@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func InitDB() {
+func initDB() {
 	dsn := fmt.Sprintf(
 		"postgres://%v:%v@%v:%v/%v",
 		EnvConfigs.PostgresUser,
